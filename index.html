@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Maternity Triage - Kampala</title>
+  <style>
+    :root {
+      --primary: #006d77;
+      --primary-dark: #004d57;
+      --danger: #d00000;
+      --warning: #ff9f1c;
+      --success: #2a9d8f;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --gray: #6c757d;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+      color: var(--dark);
+      min-height: 100vh;
+      padding: 20px 10px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--primary-dark);
+    }
+
+    h1 {
+      font-size: 2.1rem;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--gray);
+      font-size: 1.05rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      margin-bottom: 30px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      background: var(--primary);
+      color: white;
+      padding: 16px 20px;
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
+
+    .card-body {
+      padding: 24px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 700px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #444;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #ced4da;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(0,109,119,0.15);
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .checkbox-group {
+      margin: 12px 0;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      font-size: 1.05rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+
+    .priority-badge {
+      padding: 10px 18px;
+      border-radius: 50px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .priority-red    { background: #dc3545; color: white; }
+    .priority-orange { background: #fd7e14; color: white; }
+    .priority-yellow { background: #ffc107; color: #212529; }
+    .priority-green  { background: #28a745; color: white; }
+    .priority-blue   { background: #17a2b8; color: white; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 14px;
+      text-align: left;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    th {
+      background: #f1f3f5;
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background: #f8f9fa;
+    }
+
+    .action-btn {
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      margin-right: 6px;
+      border-radius: 4px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #6c757d;
+      font-size: 1.1rem;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #6c757d;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <header>
+      <h1>Maternity Triage</h1>
+      <div class="subtitle">Quick Obstetric Priority Assessment Tool</div>
+    </header>
+
+    <!-- PAGE 1 / FORM -->
+    <div class="card" id="assessmentCard">
+      <div class="card-header">New Patient Assessment</div>
+      <div class="card-body">
+
+        <form id="triageForm">
+          <div class="form-grid">
+
+            <div>
+              <label>Patient Name / ID</label>
+              <input type="text" id="name" placeholder="e.g. Nakato A. or PID-2026-047" required>
+            </div>
+
+            <div>
+              <label>Gestational Age (weeks)</label>
+              <input type="number" id="ga" min="0" max="42" placeholder="e.g. 32" required>
+            </div>
+
+            <div>
+              <label>Blood Pressure (mmHg)</label>
+              <input type="text" id="bp" placeholder="e.g. 140/90" required>
+            </div>
+
+            <div>
+              <label>Fetal Heart Rate (bpm)</label>
+              <input type="number" id="fhr" min="0" max="220" placeholder="e.g. 145">
+            </div>
+
+            <div class="full-width">
+              <label>Main Complaint / Symptoms (select all that apply)</label>
+              <div class="checkbox-group">
+                <label><input type="checkbox" name="symptom" value="heavy-bleeding"> Heavy vaginal bleeding</label><br>
+                <label><input type="checkbox" name="symptom" value="severe-pain"> Severe abdominal pain</label><br>
+                <label><input type="checkbox" name="symptom" value="high-bp"> Severe headache / high BP symptoms</label><br>
+                <label><input type="checkbox" name="symptom" value="reduced-movements"> Reduced fetal movements</label><br>
+                <label><input type="checkbox" name="symptom" value="contractions"> Regular contractions / labor</label><br>
+                <label><input type="checkbox" name="symptom" value="leaking-fluid"> Leaking fluid (PROM)</label><br>
+                <label><input type="checkbox" name="symptom" value="fever"> Fever / signs of infection</label>
+              </div>
+            </div>
+
+          </div>
+
+          <div style="margin-top: 28px; text-align: center;">
+            <button type="submit" class="btn btn-primary">Assess Priority</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+    <!-- PAGE 2 / RESULT + QUEUE -->
+    <div class="card" id="dashboardCard" style="display:none;">
+      <div class="card-header">Triage Queue & Results</div>
+      <div class="card-body">
+
+        <div id="resultBox" style="display:none;">
+          <div id="priorityBadge" class="priority-badge"></div>
+          <p style="text-align:center; margin: 12px 0; color:#555;">
+            Patient added to queue at <span id="timestamp"></span>
+          </p>
+        </div>
+
+        <h3 style="margin: 24px 0 12px;">Current Queue</h3>
+
+        <div id="queueTableContainer">
+          <div class="empty-state" id="emptyMessage">
+            No patients in queue yet.
+          </div>
+          <table id="queueTable" style="display:none;">
+            <thead>
+              <tr>
+                <th>Patient</th>
+                <th>Priority</th>
+                <th>Time</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="queueBody"></tbody>
+          </table>
+        </div>
+
+        <div style="margin-top: 30px; text-align:center;">
+          <button class="btn btn-secondary" onclick="showForm()">New Assessment</button>
+          <button class="btn btn-secondary" onclick="clearQueue()" style="margin-left:12px;">
+            Clear Queue
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    Local triage tool • Data stored only in this browser • Kampala, 2026
+  </footer>
+
+  <script>
+    const form = document.getElementById('triageForm');
+    const assessmentCard = document.getElementById('assessmentCard');
+    const dashboardCard = document.getElementById('dashboardCard');
+    const resultBox = document.getElementById('resultBox');
+    const priorityBadge = document.getElementById('priorityBadge');
+    const timestampEl = document.getElementById('timestamp');
+    const queueBody = document.getElementById('queueBody');
+    const queueTable = document.getElementById('queueTable');
+    const emptyMessage = document.getElementById('emptyMessage');
+
+    let queue = JSON.parse(localStorage.getItem('maternityTriageQueue')) || [];
+
+    function saveQueue() {
+      localStorage.setItem('maternityTriageQueue', JSON.stringify(queue));
+    }
+
+    function renderQueue() {
+      queueBody.innerHTML = '';
+      if (queue.length === 0) {
+        queueTable.style.display = 'none';
+        emptyMessage.style.display = 'block';
+      } else {
+        queueTable.style.display = 'table';
+        emptyMessage.style.display = 'none';
+
+        queue.forEach((patient, index) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${patient.name || 'Unknown'}</td>
+            <td><span class="priority-badge priority-${patient.priorityClass}">${patient.priority}</span></td>
+            <td>${patient.time}</td>
+            <td>
+              <button class="btn btn-secondary action-btn" onclick="removePatient(${index})">Remove</button>
+            </td>
+          `;
+          queueBody.appendChild(tr);
+        });
+      }
+    }
+
+    function showDashboard() {
+      assessmentCard.style.display = 'none';
+      dashboardCard.style.display = 'block';
+      renderQueue();
+    }
+
+    function showForm() {
+      assessmentCard.style.display = 'block';
+      dashboardCard.style.display = 'none';
+      resultBox.style.display = 'none';
+      form.reset();
+    }
+
+    function removePatient(index) {
+      if (confirm("Remove this patient from queue?")) {
+        queue.splice(index, 1);
+        saveQueue();
+        renderQueue();
+      }
+    }
+
+    function clearQueue() {
+      if (confirm("Clear entire queue? This cannot be undone.")) {
+        queue = [];
+        saveQueue();
+        renderQueue();
+      }
+    }
+
+    function getPriority(symptoms, ga, bp, fhr) {
+      const bpParts = bp.split('/').map(n => parseInt(n.trim()) || 0);
+      const systolic = bpParts[0] || 0;
+
+      if (
+        symptoms.includes('heavy-bleeding') ||
+        systolic >= 160 ||
+        (fhr && (fhr < 100 || fhr > 170))
+      ) {
+        return { text: "RED - Immediate", class: "red" };
+      }
+
+      if (
+        symptoms.includes('severe-pain') ||
+        symptoms.includes('high-bp') ||
+        (ga < 37 && symptoms.includes('contractions'))
+      ) {
+        return { text: "ORANGE - Urgent", class: "orange" };
+      }
+
+      if (
+        symptoms.includes('reduced-movements') ||
+        symptoms.includes('leaking-fluid') ||
+        symptoms.includes('fever')
+      ) {
+        return { text: "YELLOW - Prompt", class: "yellow" };
+      }
+
+      return { text: "GREEN - Non-urgent", class: "green" };
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const ga = parseInt(document.getElementById('ga').value) || 0;
+      const bp = document.getElementById('bp').value.trim();
+      const fhr = parseInt(document.getElementById('fhr').value) || null;
+
+      const symptoms = Array.from(document.querySelectorAll('input[name="symptom"]:checked'))
+                            .map(cb => cb.value);
+
+      const priority = getPriority(symptoms, ga, bp, fhr);
+
+      const now = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+
+      queue.unshift({
+        name,
+        priority: priority.text,
+        priorityClass: priority.class,
+        time: now,
+        ga, bp, fhr, symptoms
+      });
+
+      saveQueue();
+
+      // Show result
+      priorityBadge.textContent = priority.text;
+      priorityBadge.className = `priority-badge priority-${priority.class}`;
+      timestampEl.textContent = now;
+      resultBox.style.display = 'block';
+
+      // Go to dashboard after short delay
+      setTimeout(showDashboard, 1800);
+    });
+
+    // Load queue on start
+    renderQueue();
+    if (queue.length > 0) {
+      showDashboard();
+    }
+
+  </script>
+
+</body>
+</html>
