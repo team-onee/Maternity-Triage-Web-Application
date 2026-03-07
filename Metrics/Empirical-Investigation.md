@@ -6,7 +6,7 @@ This README demonstrates how the **Maternity Triage web application** (an offlin
 
 The framework focuses on applying scientific methods to investigate SE properties, filling gaps between research and practice, using techniques like surveys, case studies, and formal experiments.
 
-While the app is a clinical tool rather than an SE research platform, its design implicitly applies empirical investigation — it "investigates" patient urgency through hypothesis-driven data collection, variable control, and analysis, mirroring how SE investigates tools and processes. For example, priority assignment "experiments" with clinical variables to evaluate outcomes, similar to testing rules-of-thumb like *"Should LOC be fewer than 200 lines?"*
+While the app is a clinical tool rather than an SE research platform, its design implicitly applies empirical investigation; it "investigates" patient urgency through hypothesis-driven data collection, variable control, and analysis, mirroring how SE investigates tools and processes. For example, priority assignment "experiments" with clinical variables to evaluate outcomes, similar to testing rules-of-thumb like *"Should LOC be fewer than 200 lines?"*
 
 ---
 
@@ -73,7 +73,7 @@ The app "investigates" patient properties (e.g., performance as urgency, usabili
 
 ## Formal Experiments in the App
 
-The app's priority logic functions as a formal experiment — controlled and repeatable.
+The app's priority logic functions as a formal experiment controlled and repeatable.
 
 ### Planning Phases
 
@@ -143,4 +143,4 @@ To support fuller empirical analysis, future versions could add:
 
 ---
 
-*Inspired by SENG 421 materials — © 2026, Kampala Team*
+*Inspired by SENG 421 materials © 2026, Kampala Team*
